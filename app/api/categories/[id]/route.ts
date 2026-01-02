@@ -81,3 +81,53 @@ export async function PATCH(
   }
 }
 
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> | { id: string } }
+) {
+  try {
+    const resolvedParams = await Promise.resolve(params)
+    const { id } = resolvedParams
+    
+    // Check if category exists
+    const category = await prisma.category.findUnique({
+      where: { id },
+      include: {
+        _count: {
+          select: { products: true },
+        },
+      },
+    })
+    
+    if (!category) {
+      return NextResponse.json(
+        { error: 'Catégorie non trouvée' },
+        { status: 404 }
+      )
+    }
+    
+    // Prevent deletion if category has products
+    if (category._count.products > 0) {
+      return NextResponse.json(
+        { 
+          error: `Impossible de supprimer cette catégorie car elle contient ${category._count.products} produit(s). Veuillez d'abord supprimer ou déplacer les produits.` 
+        },
+        { status: 400 }
+      )
+    }
+    
+    // Delete the category
+    await prisma.category.delete({
+      where: { id },
+    })
+    
+    return NextResponse.json({ success: true })
+  } catch (error: any) {
+    console.error('Error deleting category:', error)
+    return NextResponse.json(
+      { error: error?.message || 'Erreur lors de la suppression de la catégorie' },
+      { status: 500 }
+    )
+  }
+}
+

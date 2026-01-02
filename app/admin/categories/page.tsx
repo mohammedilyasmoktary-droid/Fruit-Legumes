@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/Card'
 import { Table, TableHeader, TableRow, TableHead, TableBody, TableCell } from '@/components/ui/Table'
 import { Button } from '@/components/ui/Button'
 import { ProductImage } from '@/components/ui/ProductImage'
+import { DeleteCategoryButton } from '@/components/admin/DeleteCategoryButton'
 
 export default async function AdminCategoriesPage() {
   const categories = await prisma.category.findMany({
@@ -68,11 +69,18 @@ export default async function AdminCategoriesPage() {
                     {category._count.products}
                   </TableCell>
                   <TableCell className="text-right">
-                    <Link href={`/admin/categories/${category.id}/modifier`}>
-                      <Button variant="outline" size="sm">
-                        Modifier
-                      </Button>
-                    </Link>
+                    <div className="flex items-center justify-end gap-2">
+                      <Link href={`/admin/categories/${category.id}/modifier`}>
+                        <Button variant="outline" size="sm">
+                          Modifier
+                        </Button>
+                      </Link>
+                      <DeleteCategoryButton
+                        categoryId={category.id}
+                        categoryName={category.name}
+                        productCount={category._count.products}
+                      />
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

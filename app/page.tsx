@@ -4,6 +4,9 @@ import { ProductImage } from '@/components/ui/ProductImage'
 import { Button } from '@/components/ui/Button'
 import { Card } from '@/components/ui/Card'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 export default async function HomePage() {
   const categories = await prisma.category.findMany({
     include: {

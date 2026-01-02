@@ -2,6 +2,9 @@ import { prisma } from '@/lib/prisma'
 import { ProductGrid } from '@/components/ProductGrid'
 import { ProductFilters } from '@/components/ProductFilters'
 
+export const dynamic = 'force-dynamic'
+export const revalidate = 0
+
 interface SearchParams {
   search?: string
   categorie?: string

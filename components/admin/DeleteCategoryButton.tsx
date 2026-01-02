@@ -1,8 +1,8 @@
 'use client'
 
 import { useRouter } from 'next/navigation'
-import { Button } from '@/components/ui/Button'
 import { useState } from 'react'
+import { ConfirmDialog } from '@/components/ui/ConfirmDialog'
 
 interface DeleteCategoryButtonProps {
   categoryId: string
@@ -13,29 +13,19 @@ interface DeleteCategoryButtonProps {
 export function DeleteCategoryButton({ categoryId, categoryName, productCount }: DeleteCategoryButtonProps) {
   const router = useRouter()
   const [isDeleting, setIsDeleting] = useState(false)
+  const [showConfirm, setShowConfirm] = useState(false)
 
-  const handleDelete = async (e: React.MouseEvent) => {
+  const handleDeleteClick = (e: React.MouseEvent) => {
     e.preventDefault()
     e.stopPropagation()
-    
-    console.log('Delete button clicked', { categoryId, categoryName, productCount })
-    
-    // Warn if category has products
-    let confirmMessage = `Êtes-vous sûr de vouloir supprimer la catégorie "${categoryName}" ?`
-    if (productCount > 0) {
-      confirmMessage = `⚠️ ATTENTION: Cette catégorie contient ${productCount} produit(s).\n\nEn supprimant cette catégorie, tous les produits associés seront également supprimés.\n\nÊtes-vous vraiment sûr de vouloir continuer ?`
-    } else {
-      confirmMessage += '\n\nCette action est irréversible.'
-    }
+    setShowConfirm(true)
+  }
 
-    if (!confirm(confirmMessage)) {
-      return
-    }
-
+  const handleConfirm = async () => {
+    setShowConfirm(false)
     setIsDeleting(true)
 
     try {
-      console.log('Sending DELETE request to:', `/api/categories/${categoryId}`)
       const response = await fetch(`/api/categories/${categoryId}`, {
         method: 'DELETE',
         headers: {
@@ -43,33 +33,55 @@ export function DeleteCategoryButton({ categoryId, categoryName, productCount }:
         },
       })
 
-      console.log('Response status:', response.status)
       const data = await response.json()
-      console.log('Response data:', data)
 
       if (response.ok) {
         router.refresh()
       } else {
         alert(data.error || 'Erreur lors de la suppression')
+        setIsDeleting(false)
       }
     } catch (error) {
       console.error('Error deleting category:', error)
       alert('Erreur lors de la suppression: ' + (error instanceof Error ? error.message : 'Erreur inconnue'))
-    } finally {
       setIsDeleting(false)
     }
   }
 
+  const handleCancel = () => {
+    setShowConfirm(false)
+  }
+
+  const getConfirmMessage = () => {
+    if (productCount > 0) {
+      return `Cette catégorie contient ${productCount} produit(s).\n\nEn supprimant cette catégorie, tous les produits associés seront également supprimés de manière permanente.\n\nCette action est irréversible.`
+    }
+    return `Êtes-vous sûr de vouloir supprimer la catégorie "${categoryName}" ?\n\nCette action est irréversible.`
+  }
+
   return (
-    <button
-      type="button"
-      onClick={handleDelete}
-      disabled={isDeleting}
-      title={productCount > 0 ? `Supprimer la catégorie et ${productCount} produit(s) associé(s)` : 'Supprimer la catégorie'}
-      className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
-    >
-      {isDeleting ? 'Suppression...' : 'Supprimer'}
-    </button>
+    <>
+      <button
+        type="button"
+        onClick={handleDeleteClick}
+        disabled={isDeleting}
+        title={productCount > 0 ? `Supprimer la catégorie et ${productCount} produit(s) associé(s)` : 'Supprimer la catégorie'}
+        className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+      >
+        {isDeleting ? 'Suppression...' : 'Supprimer'}
+      </button>
+
+      <ConfirmDialog
+        isOpen={showConfirm}
+        title={productCount > 0 ? '⚠️ Attention' : 'Confirmer la suppression'}
+        message={getConfirmMessage()}
+        confirmText="Supprimer"
+        cancelText="Annuler"
+        onConfirm={handleConfirm}
+        onCancel={handleCancel}
+        variant={productCount > 0 ? 'warning' : 'danger'}
+      />
+    </>
   )
 }
 

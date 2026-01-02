@@ -86,8 +86,18 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> | { id: string } }
 ) {
   try {
-    const resolvedParams = await Promise.resolve(params)
+    // Properly resolve params for Next.js 15
+    const resolvedParams = params instanceof Promise ? await params : params
     const { id } = resolvedParams
+    
+    console.log('DELETE category request - ID:', id)
+    
+    if (!id) {
+      return NextResponse.json(
+        { error: 'ID de catégorie manquant' },
+        { status: 400 }
+      )
+    }
     
     // Check if category exists
     const category = await prisma.category.findUnique({
@@ -99,6 +109,8 @@ export async function DELETE(
       },
     })
     
+    console.log('Category found:', category ? 'yes' : 'no', category?._count.products || 0, 'products')
+    
     if (!category) {
       return NextResponse.json(
         { error: 'Catégorie non trouvée' },
@@ -108,19 +120,27 @@ export async function DELETE(
     
     // Delete all products in this category first (cascade delete)
     if (category._count.products > 0) {
+      console.log(`Deleting ${category._count.products} products in category ${id}`)
       await prisma.product.deleteMany({
         where: { categoryId: id },
       })
     }
     
     // Delete the category
+    console.log('Deleting category:', id)
     await prisma.category.delete({
       where: { id },
     })
     
+    console.log('Category deleted successfully')
     return NextResponse.json({ success: true })
   } catch (error: any) {
     console.error('Error deleting category:', error)
+    console.error('Error details:', {
+      message: error?.message,
+      code: error?.code,
+      meta: error?.meta,
+    })
     return NextResponse.json(
       { error: error?.message || 'Erreur lors de la suppression de la catégorie' },
       { status: 500 }

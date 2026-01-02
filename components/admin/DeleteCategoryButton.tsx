@@ -26,6 +26,7 @@ export function DeleteCategoryButton({ categoryId, categoryName, productCount }:
     setIsDeleting(true)
 
     try {
+      console.log('Deleting category:', categoryId)
       const response = await fetch(`/api/categories/${categoryId}`, {
         method: 'DELETE',
         headers: {
@@ -33,10 +34,15 @@ export function DeleteCategoryButton({ categoryId, categoryName, productCount }:
         },
       })
 
+      console.log('Response status:', response.status)
       const data = await response.json()
+      console.log('Response data:', data)
 
       if (response.ok) {
-        router.refresh()
+        // Small delay to ensure deletion is complete
+        setTimeout(() => {
+          router.refresh()
+        }, 100)
       } else {
         alert(data.error || 'Erreur lors de la suppression')
         setIsDeleting(false)

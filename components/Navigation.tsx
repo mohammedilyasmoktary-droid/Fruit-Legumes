@@ -60,6 +60,14 @@ export function Navigation() {
                 </span>
               )}
             </Link>
+            <Link
+              href="/admin"
+              className="text-gray-700 hover:text-purple-600 transition-colors font-medium flex items-center gap-1"
+              title="Interface d'administration"
+            >
+              <span>⚙️</span>
+              <span className="hidden sm:inline">Admin</span>
+            </Link>
           </div>
         </div>
       </div>

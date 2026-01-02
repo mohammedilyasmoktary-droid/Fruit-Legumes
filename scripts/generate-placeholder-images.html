@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Générateur d'images placeholder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .image-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .image-item {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+        button {
+            background: #4ade80;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover {
+            background: #22c55e;
+        }
+    </style>
+</head>
+<body>
+    <h1>Générateur d'images placeholder pour Fruits & Légumes</h1>
+    <p>Cliquez sur "Télécharger toutes les images" pour générer les placeholders.</p>
+    <button onclick="downloadAll()">Télécharger toutes les images</button>
+    
+    <div class="image-grid" id="grid"></div>
+
+    <script>
+        const products = [
+            'pommes', 'poires', 'fraises', 'cerises', 'abricots', 'peches',
+            'nectarines', 'raisin-blanc', 'melon', 'pasteque', 'tomates',
+            'carottes', 'courgettes', 'aubergines', 'poivrons', 'salade',
+            'concombres', 'radis', 'haricots-verts', 'pommes-de-terre',
+            'oignons', 'ail', 'basilic', 'persil', 'ciboulette', 'menthe',
+            'thym', 'romarin', 'panier-fruits', 'panier-legumes', 'panier-complet'
+        ];
+
+        const colors = {
+            'pommes': '#fbbf24', 'poires': '#fde047', 'fraises': '#f87171',
+            'cerises': '#dc2626', 'abricots': '#fb923c', 'peches': '#fb923c',
+            'nectarines': '#fde047', 'raisin-blanc': '#d9f99d', 'melon': '#4ade80',
+            'pasteque': '#f87171', 'tomates': '#dc2626', 'carottes': '#fb923c',
+            'courgettes': '#4ade80', 'aubergines': '#9333ea', 'poivrons': '#dc2626',
+            'salade': '#4ade80', 'concombres': '#4ade80', 'radis': '#f87171',
+            'haricots-verts': '#4ade80', 'pommes-de-terre': '#fbbf24', 'oignons': '#fde047',
+            'ail': '#f3f4f6', 'basilic': '#4ade80', 'persil': '#4ade80',
+            'ciboulette': '#4ade80', 'menthe': '#4ade80', 'thym': '#4ade80',
+            'romarin': '#4ade80', 'panier-fruits': '#fbbf24', 'panier-legumes': '#4ade80',
+            'panier-complet': '#22c55e'
+        };
+
+        function createImage(name) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 400;
+            canvas.height = 400;
+            const ctx = canvas.getContext('2d');
+            
+            const color = colors[name] || '#4ade80';
+            ctx.fillStyle = color;
+            ctx.fillRect(0, 0, 400, 400);
+            
+            ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+            ctx.font = 'bold 48px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(name.charAt(0).toUpperCase() + name.slice(1).replace(/-/g, ' '), 200, 200);
+            
+            return canvas;
+        }
+
+        function downloadImage(name) {
+            const canvas = createImage(name);
+            canvas.toBlob((blob) => {
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `${name}.jpg`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }, 'image/jpeg', 0.9);
+        }
+
+        function downloadAll() {
+            products.forEach((name, index) => {
+                setTimeout(() => downloadImage(name), index * 200);
+            });
+        }
+
+        // Afficher les aperçus
+        products.forEach(name => {
+            const item = document.createElement('div');
+            item.className = 'image-item';
+            const canvas = createImage(name);
+            item.appendChild(canvas);
+            const button = document.createElement('button');
+            button.textContent = `Télécharger ${name}.jpg`;
+            button.onclick = () => downloadImage(name);
+            item.appendChild(button);
+            document.getElementById('grid').appendChild(item);
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+

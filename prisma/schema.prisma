@@ -1,0 +1,71 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Category {
+  id          String    @id @default(cuid())
+  name        String
+  slug        String    @unique
+  description String?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  imageUrl    String?
+  products    Product[]
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String?
+  price       Float
+  unit        String
+  imageUrl    String
+  inStock     Boolean     @default(true)
+  categoryId  String
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  category    Category    @relation(fields: [categoryId], references: [id])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     Int         @unique @default(autoincrement())
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  deliveryAddress String
+  deliveryNotes   String?
+  deliverySlot    String
+  status          OrderStatus @default(EN_ATTENTE)
+  subtotal        Float
+  deliveryFee     Float       @default(5.00)
+  total           Float
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id        String   @id @default(cuid())
+  orderId   String
+  productId String
+  quantity  Int
+  price     Float
+  createdAt DateTime @default(now())
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id])
+}
+
+enum OrderStatus {
+  EN_ATTENTE
+  EN_PREPARATION
+  EN_LIVRAISON
+  LIVREE
+}

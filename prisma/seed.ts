@@ -15,6 +15,7 @@ async function main() {
       name: 'Fruits',
       slug: 'fruits',
       description: 'Fruits frais de saison',
+      imageUrl: '/products/pommes.jpg', // Image du premier produit
     },
   })
 
@@ -23,6 +24,7 @@ async function main() {
       name: 'Légumes',
       slug: 'legumes',
       description: 'Légumes frais du jardin',
+      imageUrl: '/products/tomates.jpg', // Image du premier produit
     },
   })
 
@@ -31,6 +33,7 @@ async function main() {
       name: 'Herbes',
       slug: 'herbes',
       description: 'Herbes aromatiques fraîches',
+      imageUrl: '/products/basilic.jpg', // Image du premier produit
     },
   })
 
@@ -39,6 +42,7 @@ async function main() {
       name: 'Paniers',
       slug: 'paniers',
       description: 'Paniers et assortiments',
+      imageUrl: '/products/panier-fruits.jpg', // Image du premier produit
     },
   })
 

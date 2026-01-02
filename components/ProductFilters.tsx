@@ -42,7 +42,7 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
   return (
     <Card className="mb-6 md:mb-8">
       <CardContent className="p-4 md:p-6">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4 mb-4">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
           <Input
             label="Recherche"
             value={search}
@@ -86,10 +86,19 @@ export function ProductFilters({ categories }: ProductFiltersProps) {
         </div>
         
         <div className="flex flex-col sm:flex-row gap-3">
-          <Button onClick={handleFilter} className="flex-1 sm:flex-none touch-manipulation text-base py-3 md:py-2">
+          <Button 
+            onClick={handleFilter} 
+            className="flex-1 sm:flex-none touch-manipulation"
+            size="md"
+          >
             Filtrer
           </Button>
-          <Button variant="outline" onClick={clearFilters} className="flex-1 sm:flex-none touch-manipulation text-base py-3 md:py-2">
+          <Button 
+            variant="outline" 
+            onClick={clearFilters} 
+            className="flex-1 sm:flex-none touch-manipulation"
+            size="md"
+          >
             Réinitialiser
           </Button>
         </div>

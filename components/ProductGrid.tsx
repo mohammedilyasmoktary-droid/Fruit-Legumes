@@ -20,15 +20,15 @@ export function ProductGrid({ products }: ProductGridProps) {
   }
 
   return (
-    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
       {products.map((product) => (
         <Link
           key={product.id}
           href={`/produit/${product.slug}`}
-          className="group"
+          className="group focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-offset-2 rounded-2xl"
         >
-          <Card hover className="h-full flex flex-col">
-            <div className="relative h-64 overflow-hidden bg-gray-50">
+          <Card hover className="h-full flex flex-col overflow-hidden">
+            <div className="relative aspect-[4/3] overflow-hidden bg-gray-50">
               <ProductImage
                 src={product.imageUrl}
                 alt={product.name}
@@ -45,26 +45,26 @@ export function ProductGrid({ products }: ProductGridProps) {
                 </div>
               )}
             </div>
-            <div className="p-5 flex-1 flex flex-col">
+            <div className="p-4 md:p-5 flex-1 flex flex-col">
               <div className="mb-2">
                 <Badge variant="default" className="text-xs">
                   {product.category.name}
                 </Badge>
               </div>
-              <h3 className="text-lg font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors line-clamp-2">
+              <h3 className="text-base md:text-lg font-bold text-gray-900 mb-2 group-hover:text-green-600 transition-colors line-clamp-2">
                 {product.name}
               </h3>
               {product.description && (
-                <p className="text-sm text-gray-600 mb-4 line-clamp-2 flex-1">
+                <p className="text-sm text-gray-600 mb-3 md:mb-4 line-clamp-2 flex-1">
                   {product.description}
                 </p>
               )}
               <div className="flex items-baseline justify-between mt-auto">
                 <div>
-                  <span className="text-2xl font-bold text-green-600">
+                  <span className="text-xl md:text-2xl font-bold text-green-600">
                     {product.price.toFixed(2)} MAD
                   </span>
-                  <span className="text-sm text-gray-500 ml-1">
+                  <span className="text-xs md:text-sm text-gray-500 ml-1">
                     /{product.unit}
                   </span>
                 </div>

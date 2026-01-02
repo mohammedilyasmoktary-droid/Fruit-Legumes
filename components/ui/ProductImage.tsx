@@ -38,6 +38,7 @@ export function ProductImage({ src, alt, className = '' }: ProductImageProps) {
       className={className}
       onError={handleError}
       loading="lazy"
+      style={{ display: 'block' }}
     />
   )
 }

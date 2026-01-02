@@ -112,28 +112,28 @@ export default function OrderPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-12">
+    <div className="min-h-screen bg-gray-50 py-6 md:py-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-8">
+        <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-6 md:mb-8">
           Commande
         </h1>
         
-        <form onSubmit={onSubmit} className="space-y-6">
+        <form onSubmit={onSubmit} className="space-y-4 md:space-y-6">
           {/* Liste des articles */}
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
                 Articles de votre commande
               </h2>
             </CardHeader>
             <CardContent>
-              <div className="space-y-4">
+              <div className="space-y-3 md:space-y-4">
                 {items.map((item) => (
                   <div
                     key={item.productId}
-                    className="flex gap-4 pb-4 border-b border-gray-200 last:border-0 last:pb-0"
+                    className="flex gap-3 md:gap-4 pb-3 md:pb-4 border-b border-gray-200 last:border-0 last:pb-0"
                   >
-                    <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
+                    <div className="relative w-16 h-16 md:w-20 md:h-20 rounded-lg overflow-hidden flex-shrink-0 bg-gray-100">
                       {item.imageUrl ? (
                         <ProductImage
                           src={item.imageUrl}
@@ -142,18 +142,18 @@ export default function OrderPage() {
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-gray-200">
-                          <span className="text-xl">🛒</span>
+                          <span className="text-lg md:text-xl">🛒</span>
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <h3 className="text-lg font-semibold text-gray-900 mb-1">
+                      <h3 className="text-base md:text-lg font-semibold text-gray-900 mb-1 line-clamp-2">
                         {item.name}
                       </h3>
-                      <p className="text-sm text-gray-600 mb-2">
+                      <p className="text-xs md:text-sm text-gray-600 mb-1 md:mb-2">
                         {item.quantity} × {item.price.toFixed(2)} MAD / {item.unit}
                       </p>
-                      <p className="text-base font-semibold text-green-600">
+                      <p className="text-sm md:text-base font-semibold text-green-600">
                         {(item.price * item.quantity).toFixed(2)} MAD
                       </p>
                     </div>
@@ -166,7 +166,7 @@ export default function OrderPage() {
           {/* Informations de livraison */}
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
                 Informations de livraison
               </h2>
             </CardHeader>
@@ -189,7 +189,7 @@ export default function OrderPage() {
                   }}
                   rows={3}
                   required
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none ${
+                  className={`w-full px-4 py-3 text-base border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none touch-manipulation ${
                     errors.address ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="Ex: 123 Rue Mohammed V, Casablanca"
@@ -217,7 +217,7 @@ export default function OrderPage() {
                     }
                   }}
                   required
-                  className={`w-full px-4 py-3 border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 ${
+                  className={`w-full px-4 py-3 text-base border-2 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 touch-manipulation ${
                     errors.phone ? 'border-red-500' : 'border-gray-300'
                   }`}
                   placeholder="Ex: +212 6XX XXX XXX"
@@ -239,10 +239,10 @@ export default function OrderPage() {
                   value={deliveryInstructions}
                   onChange={(e) => setDeliveryInstructions(e.target.value)}
                   rows={4}
-                  className="w-full px-4 py-3 border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none"
+                  className="w-full px-4 py-3 text-base border-2 border-gray-300 rounded-xl focus:ring-2 focus:ring-green-500 focus:border-green-500 resize-none touch-manipulation"
                   placeholder="Ex: Sonner deux fois, laisser devant la porte, appeler avant de livrer..."
                 />
-                <p className="text-sm text-gray-500 mt-1">
+                <p className="text-xs md:text-sm text-gray-500 mt-1">
                   Ajoutez des instructions pour faciliter la livraison de votre commande.
                 </p>
               </div>
@@ -252,22 +252,22 @@ export default function OrderPage() {
           {/* Récapitulatif */}
           <Card>
             <CardHeader>
-              <h2 className="text-2xl font-semibold text-gray-900">
+              <h2 className="text-xl md:text-2xl font-semibold text-gray-900">
                 Récapitulatif
               </h2>
             </CardHeader>
             <CardContent className="space-y-4">
               <div className="space-y-2">
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-sm md:text-base text-gray-700">
                   <span>Sous-total</span>
                   <span className="font-semibold">{subtotal.toFixed(2)} MAD</span>
                 </div>
-                <div className="flex justify-between text-gray-700">
+                <div className="flex justify-between text-sm md:text-base text-gray-700">
                   <span>Frais de livraison</span>
                   <span className="font-semibold">{deliveryFee.toFixed(2)} MAD</span>
                 </div>
                 <div className="border-t border-gray-200 pt-3">
-                  <div className="flex justify-between text-xl font-bold text-gray-900">
+                  <div className="flex justify-between text-lg md:text-xl font-bold text-gray-900">
                     <span>Total</span>
                     <span className="text-green-600">{total.toFixed(2)} MAD</span>
                   </div>
@@ -277,7 +277,7 @@ export default function OrderPage() {
               <Button
                 type="submit"
                 size="lg"
-                className="w-full"
+                className="w-full text-base md:text-lg py-3 md:py-4 touch-manipulation"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? 'Traitement...' : 'Valider la commande'}

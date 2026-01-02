@@ -108,16 +108,16 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
   const roundedQuantity = Math.round(displayQuantity * 2) / 2
 
   return (
-    <div className="space-y-4">
-      <div className="flex items-center gap-4">
-        <label className="text-base font-medium text-gray-700 min-w-[80px]">
+    <div className="space-y-3 md:space-y-4">
+      <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+        <label className="text-sm md:text-base font-medium text-gray-700 sm:min-w-[80px]">
           Quantité:
         </label>
         <div className="flex items-center gap-2">
           <button
             type="button"
             onClick={handleDecrease}
-            className="w-10 h-10 rounded-xl border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 transition-all font-semibold text-gray-700"
+            className="w-12 h-12 md:w-10 md:h-10 rounded-xl border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 active:bg-green-100 transition-all font-semibold text-gray-700 text-lg md:text-base flex items-center justify-center touch-manipulation"
             aria-label="Diminuer la quantité"
           >
             −
@@ -129,13 +129,13 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
             onBlur={handleQuantityBlur}
             min="0.5"
             step="0.5"
-            className="w-24 text-center border-2 border-gray-300 rounded-xl py-2 font-semibold focus:ring-2 focus:ring-green-500 focus:border-green-500"
+            className="w-28 md:w-24 text-center text-base border-2 border-gray-300 rounded-xl py-2.5 md:py-2 font-semibold focus:ring-2 focus:ring-green-500 focus:border-green-500 touch-manipulation"
             aria-label="Quantité"
           />
           <button
             type="button"
             onClick={handleIncrease}
-            className="w-10 h-10 rounded-xl border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 transition-all font-semibold text-gray-700"
+            className="w-12 h-12 md:w-10 md:h-10 rounded-xl border-2 border-gray-300 hover:border-green-500 hover:bg-green-50 active:bg-green-100 transition-all font-semibold text-gray-700 text-lg md:text-base flex items-center justify-center touch-manipulation"
             aria-label="Augmenter la quantité"
           >
             +
@@ -144,12 +144,12 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       </div>
 
       {/* Total Price Display */}
-      <div className="bg-green-50 rounded-xl p-4 border-2 border-green-200">
-        <div className="flex justify-between items-center">
-          <span className="text-sm font-medium text-gray-700">
+      <div className="bg-green-50 rounded-xl p-3 md:p-4 border-2 border-green-200">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-0">
+          <span className="text-xs md:text-sm font-medium text-gray-700">
             Total pour {roundedQuantity} {product.unit}:
           </span>
-          <span className="text-2xl font-bold text-green-600">
+          <span className="text-xl md:text-2xl font-bold text-green-600">
             {(product.price * roundedQuantity).toFixed(2)} MAD
           </span>
         </div>
@@ -161,7 +161,7 @@ export function AddToCartButton({ product }: AddToCartButtonProps) {
       <Button
         onClick={handleAddToCart}
         size="lg"
-        className="w-full"
+        className="w-full text-base md:text-lg py-3 md:py-4 touch-manipulation"
       >
         {added ? '✓ Ajouté au panier!' : 'Ajouter au panier'}
       </Button>

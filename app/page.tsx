@@ -20,23 +20,23 @@ export default async function HomePage() {
   return (
     <div className="min-h-screen">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-green-50 via-white to-orange-50 py-20 px-4 overflow-hidden">
+      <section className="relative bg-gradient-to-br from-green-50 via-white to-orange-50 py-12 md:py-20 px-4 overflow-hidden">
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-10 right-10 text-9xl">🍎</div>
-          <div className="absolute bottom-20 left-10 text-9xl">🥕</div>
-          <div className="absolute top-1/2 left-1/4 text-7xl">🍊</div>
+          <div className="absolute top-10 right-10 text-6xl md:text-9xl">🍎</div>
+          <div className="absolute bottom-20 left-10 text-6xl md:text-9xl">🥕</div>
+          <div className="absolute top-1/2 left-1/4 text-5xl md:text-7xl">🍊</div>
         </div>
         
         <div className="max-w-7xl mx-auto text-center relative z-10">
-          <h1 className="text-5xl md:text-7xl font-bold mb-6 bg-gradient-to-r from-green-600 via-green-500 to-orange-500 bg-clip-text text-transparent">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 md:mb-6 bg-gradient-to-r from-green-600 via-green-500 to-orange-500 bg-clip-text text-transparent px-2">
             Fruits & Légumes Frais
           </h1>
-          <p className="text-xl md:text-2xl text-gray-600 mb-10 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-gray-600 mb-6 md:mb-10 max-w-3xl mx-auto leading-relaxed px-2">
             Découvrez notre sélection de produits frais du jardin, 
             livrés directement chez vous
           </p>
           <Link href="/boutique">
-            <Button size="lg" className="shadow-primeur-lg hover:scale-105 transition-transform">
+            <Button size="lg" className="shadow-primeur-lg hover:scale-105 transition-transform text-base md:text-lg px-6 md:px-8 py-3 md:py-4">
               Commander maintenant
             </Button>
           </Link>
@@ -44,13 +44,13 @@ export default async function HomePage() {
       </section>
 
       {/* Featured Categories */}
-      <section className="py-20 px-4 bg-white">
+      <section className="py-12 md:py-20 px-4 bg-white">
         <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+          <div className="text-center mb-8 md:mb-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-gray-900 mb-2 md:mb-4 px-2">
               Catégories vedettes
             </h2>
-            <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+            <p className="text-sm sm:text-base md:text-lg text-gray-600 max-w-2xl mx-auto px-2">
               Explorez nos collections de produits frais et de saison
             </p>
           </div>

@@ -1,7 +1,6 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import Image from 'next/image'
 
 interface ProductImageProps {
   src: string
@@ -15,7 +14,7 @@ export function ProductImage({ src, alt, className = '' }: ProductImageProps) {
 
   useEffect(() => {
     // Reset error state when src changes
-    if (src && src.trim() !== '') {
+    if (src && src.trim() !== '' && src !== '/placeholder-product.svg') {
       setImgSrc(src)
       setHasError(false)
     } else {
@@ -24,33 +23,20 @@ export function ProductImage({ src, alt, className = '' }: ProductImageProps) {
     }
   }, [src])
 
-  // Use a wrapper div to handle errors since Next.js Image doesn't support onError directly
-  if (hasError || !imgSrc || imgSrc === '/placeholder-product.svg') {
-    return (
-      <Image
-        src="/placeholder-product.svg"
-        alt={alt}
-        width={400}
-        height={400}
-        className={className}
-        unoptimized
-      />
-    )
+  const handleError = () => {
+    if (!hasError) {
+      setHasError(true)
+      setImgSrc('/placeholder-product.svg')
+    }
   }
 
   return (
-    <Image
+    <img
       src={imgSrc}
       alt={alt}
-      width={400}
-      height={400}
       className={className}
-      onError={() => {
-        if (!hasError) {
-          setHasError(true)
-        }
-      }}
-      unoptimized
+      onError={handleError}
+      loading="lazy"
     />
   )
 }

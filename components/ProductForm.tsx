@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
+import Image from 'next/image'
 import { Product, Category } from '@prisma/client'
 import { Card, CardContent, CardHeader } from '@/components/ui/Card'
 import { Input } from '@/components/ui/Input'
@@ -281,14 +282,12 @@ export function ProductForm({ product, categories }: ProductFormProps) {
             <div className="mt-4">
               <p className="text-sm text-gray-600 mb-2">Aperçu:</p>
               <div className="relative w-48 h-48 rounded-xl overflow-hidden border-2 border-gray-200 bg-gray-100">
-                <img
-                  src={previewUrl || watchedImageUrl || ''}
+                <Image
+                  src={previewUrl || watchedImageUrl || '/placeholder-product.svg'}
                   alt="Preview"
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    const target = e.target as HTMLImageElement
-                    target.src = '/placeholder-product.svg'
-                  }}
+                  fill
+                  className="object-cover"
+                  unoptimized
                 />
               </div>
               <p className="mt-2 text-xs text-gray-500">{previewUrl || watchedImageUrl}</p>

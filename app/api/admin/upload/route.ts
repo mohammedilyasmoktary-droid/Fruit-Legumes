@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { writeFile, mkdir } from 'fs/promises'
-import { join } from 'path'
+import { put } from '@vercel/blob'
 
 export async function POST(request: NextRequest) {
   try {
@@ -30,34 +29,38 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const bytes = await file.arrayBuffer()
-    const buffer = Buffer.from(bytes)
-
-    // Créer le dossier uploads s'il n'existe pas
-    const uploadsDir = join(process.cwd(), 'public', 'uploads')
-    try {
-      await mkdir(uploadsDir, { recursive: true })
-    } catch (error) {
-      // Le dossier existe déjà
-    }
-
     // Générer un nom de fichier unique
     const timestamp = Date.now()
     const originalName = file.name.replace(/[^a-zA-Z0-9.-]/g, '_')
-    const filename = `${timestamp}-${originalName}`
-    const filepath = join(uploadsDir, filename)
+    const filename = `uploads/${timestamp}-${originalName}`
 
-    // Sauvegarder le fichier
-    await writeFile(filepath, buffer)
+    // Upload vers Vercel Blob Storage
+    const blob = await put(filename, file, {
+      access: 'public',
+      contentType: file.type,
+    })
 
     // Retourner l'URL publique
-    const publicUrl = `/uploads/${filename}`
-
-    return NextResponse.json({ url: publicUrl })
-  } catch (error) {
+    return NextResponse.json({ url: blob.url })
+  } catch (error: any) {
     console.error('Erreur upload:', error)
+    
+    // Message d'erreur plus détaillé
+    const errorMessage = error.message || 'Erreur lors de l\'upload'
+    
+    // Si c'est une erreur de configuration Vercel Blob
+    if (errorMessage.includes('BLOB_READ_WRITE_TOKEN') || errorMessage.includes('token')) {
+      return NextResponse.json(
+        { 
+          error: 'Vercel Blob Storage non configuré. Allez dans Vercel → Storage → Create Database → Blob',
+          details: errorMessage
+        },
+        { status: 500 }
+      )
+    }
+    
     return NextResponse.json(
-      { error: 'Erreur lors de l\'upload' },
+      { error: errorMessage },
       { status: 500 }
     )
   }

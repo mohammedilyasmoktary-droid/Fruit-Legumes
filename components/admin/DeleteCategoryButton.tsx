@@ -20,13 +20,15 @@ export function DeleteCategoryButton({ categoryId, categoryName, productCount }:
     
     console.log('Delete button clicked', { categoryId, categoryName, productCount })
     
-    // Prevent deletion if category has products
+    // Warn if category has products
+    let confirmMessage = `Êtes-vous sûr de vouloir supprimer la catégorie "${categoryName}" ?`
     if (productCount > 0) {
-      alert(`Impossible de supprimer "${categoryName}" car elle contient ${productCount} produit(s). Veuillez d'abord supprimer ou déplacer les produits.`)
-      return
+      confirmMessage = `⚠️ ATTENTION: Cette catégorie contient ${productCount} produit(s).\n\nEn supprimant cette catégorie, tous les produits associés seront également supprimés.\n\nÊtes-vous vraiment sûr de vouloir continuer ?`
+    } else {
+      confirmMessage += '\n\nCette action est irréversible.'
     }
 
-    if (!confirm(`Êtes-vous sûr de vouloir supprimer la catégorie "${categoryName}" ? Cette action est irréversible.`)) {
+    if (!confirm(confirmMessage)) {
       return
     }
 
@@ -62,8 +64,8 @@ export function DeleteCategoryButton({ categoryId, categoryName, productCount }:
     <button
       type="button"
       onClick={handleDelete}
-      disabled={isDeleting || productCount > 0}
-      title={productCount > 0 ? `Impossible de supprimer: ${productCount} produit(s) associé(s)` : 'Supprimer la catégorie'}
+      disabled={isDeleting}
+      title={productCount > 0 ? `Supprimer la catégorie et ${productCount} produit(s) associé(s)` : 'Supprimer la catégorie'}
       className="px-3 py-1.5 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-all disabled:opacity-50 disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
     >
       {isDeleting ? 'Suppression...' : 'Supprimer'}

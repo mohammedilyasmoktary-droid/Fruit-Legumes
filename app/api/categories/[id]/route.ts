@@ -106,14 +106,11 @@ export async function DELETE(
       )
     }
     
-    // Prevent deletion if category has products
+    // Delete all products in this category first (cascade delete)
     if (category._count.products > 0) {
-      return NextResponse.json(
-        { 
-          error: `Impossible de supprimer cette catégorie car elle contient ${category._count.products} produit(s). Veuillez d'abord supprimer ou déplacer les produits.` 
-        },
-        { status: 400 }
-      )
+      await prisma.product.deleteMany({
+        where: { categoryId: id },
+      })
     }
     
     // Delete the category
